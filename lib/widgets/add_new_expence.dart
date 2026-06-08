@@ -1,38 +1,54 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:expence_app/models/expence.dart';
 
 class AddNewExpence extends StatefulWidget {
-  const AddNewExpence({super.key, required this.onAddExpence});
+  final void Function(ExpenseModel expence) onAddExpence;
 
-  final Function(ExpenceModel) onAddExpence;
+  const AddNewExpence({
+    super.key,
+    required this.onAddExpence,
+  });
 
   @override
   State<AddNewExpence> createState() => _AddNewExpenceState();
 }
 
 class _AddNewExpenceState extends State<AddNewExpence> {
-
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   final _dateController = TextEditingController();
+
   Category _selectedCategory = Category.food;
 
-  //handle form submission
   void _submitExpence() {
     final title = _titleController.text;
     final amount = double.tryParse(_amountController.text);
     final date = DateTime.tryParse(_dateController.text);
 
     if (title.isEmpty || amount == null || date == null || amount <= 0) {
-      // show error message
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields correctly')),
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Invalid Input'),
+            icon: const Icon(Icons.error, color: Colors.red),
+            content: const Text(
+              'Please fill all fields correctly and ensure the amount is positive.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
       );
       return;
     }
-// create a new expence object
-    final newExpence = ExpenceModel(
+
+    // ✅ FIXED MODEL NAME
+    ExpenseModel newExpence = ExpenseModel(
       title: title,
       amount: amount,
       date: date,
@@ -40,9 +56,10 @@ class _AddNewExpenceState extends State<AddNewExpence> {
     );
 
     widget.onAddExpence(newExpence);
-    Navigator.pop(context); // close the form after submission
+    Navigator.pop(context);
   }
-// dispose controllers to free up resources
+
+  @override
   void dispose() {
     _titleController.dispose();
     _amountController.dispose();
@@ -54,40 +71,43 @@ class _AddNewExpenceState extends State<AddNewExpence> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column( 
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [// title text field and amount text field
+        children: [
           TextField(
             controller: _titleController,
             decoration: const InputDecoration(
-              hintText: 'Enter expence title',
-              labelText: 'Title'),
+              labelText: 'Title',
+              hintText: 'Enter expense title',
+            ),
           ),
-          const SizedBox(height: 16.0),
+          const SizedBox(height: 16),
+
           TextField(
             controller: _amountController,
-            decoration: const InputDecoration(
-              hintText: 'Enter expence amount',
-                labelText: 'Amount'),
             keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              labelText: 'Amount',
+              hintText: 'Enter expense amount',
+            ),
           ),
-          const SizedBox(height: 16.0),
-          // category dropdown and date picker in a row
+          const SizedBox(height: 16),
+
           Row(
             children: [
               Expanded(
-                child: DropdownButtonFormField(
-                  decoration: InputDecoration(
+                child: DropdownButtonFormField<Category>(
+                  value: _selectedCategory,
+                  decoration: const InputDecoration(
                     labelText: 'Category',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
                   ),
                   items: Category.values
-                      .map((category) => DropdownMenuItem(
-                            value: category,
-                            child: Text(category.name.toUpperCase()),
-                          ))
+                      .map(
+                        (category) => DropdownMenuItem(
+                          value: category,
+                          child: Text(category.name.toUpperCase()),
+                        ),
+                      )
                       .toList(),
                   onChanged: (value) {
                     setState(() {
@@ -96,20 +116,15 @@ class _AddNewExpenceState extends State<AddNewExpence> {
                   },
                 ),
               ),
-
               const SizedBox(width: 12),
-              // date picker
+
               Expanded(
                 child: TextField(
                   controller: _dateController,
                   readOnly: true,
-                  style: const TextStyle(fontSize: 15),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Date',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    suffixIcon: const Icon(Icons.calendar_today),
+                    suffixIcon: Icon(Icons.calendar_today),
                   ),
                   onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
@@ -120,29 +135,25 @@ class _AddNewExpenceState extends State<AddNewExpence> {
                     );
 
                     if (pickedDate != null) {
-                      _dateController.text = pickedDate.toString().split(' ')[0];
+                      _dateController.text =
+                          pickedDate.toIso8601String().split('T')[0];
                     }
                   },
                 ),
               ),
             ],
           ),
-          SizedBox(height: 16.0),
-          // add and cancel buttons
+
+          const SizedBox(height: 16),
+
           Row(
             children: [
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context); // cancel closes screen
-                  },
+                  onPressed: () => Navigator.pop(context),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
                   ),
                   child: const Text('Cancel'),
                 ),
@@ -154,17 +165,12 @@ class _AddNewExpenceState extends State<AddNewExpence> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.amber,
                     foregroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
                   ),
                   child: const Text('Add Expense'),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16.0),   
         ],
       ),
     );

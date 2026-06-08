@@ -1,29 +1,46 @@
-import 'package:uuid/uuid.dart'; // import the uuid package to generate unique ids for expences
+import 'package:uuid/uuid.dart';
+import 'package:hive/hive.dart';
 
-// create a uuid object
-final uuid = const Uuid().v4();
+part 'expence.g.dart';
 
-// enum for category of expence
+const Uuid uuid = Uuid();
+
+@HiveType(typeId: 2)
 enum Category {
+  @HiveField(0)
   food,
+
+  @HiveField(1)
   leisure,
+
+  @HiveField(2)
   travel,
+
+  @HiveField(3)
   work,
 }
-// model class for expence
-class ExpenceModel {
+
+@HiveType(typeId: 1)
+class ExpenseModel {
+  @HiveField(0)
   final String id;
+
+  @HiveField(1)
   final String title;
+
+  @HiveField(2)
   final double amount;
+
+  @HiveField(3)
   final DateTime date;
+
+  @HiveField(4)
   final Category category;
 
-// constructor
-  ExpenceModel({
+  ExpenseModel({
     required this.title,
     required this.amount,
     required this.date,
-    required this.category
-  })
-  : id = uuid; // assign the generated uuid to the id field
+    required this.category,
+  }) : id = uuid.v4();
 }
