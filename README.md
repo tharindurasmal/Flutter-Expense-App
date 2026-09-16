@@ -4,7 +4,7 @@ A clean, modern, and user-friendly expense tracking application built with Flutt
 
 ## ✨ Features
 
-* **Add/Edit/Delete Expenses:** Quickly log your daily transactions.
+* **Add/Delete Expenses:** Quickly log your daily transactions.
 * **Categorization:** Group expenses by categories (Food, Travel, Work, Leisure, etc.).
 * **Visual Insights:** View spending habits through charts and summaries.
 * **Responsive UI:** Beautifully designed interface that works seamlessly on both iOS and Android.
@@ -16,14 +16,11 @@ A clean, modern, and user-friendly expense tracking application built with Flutt
 |-------------|-------------|
 | <img width="200" alt="Image" src="https://github.com/user-attachments/assets/9145d653-6d3c-4f90-a1b2-b1d961a08487" /> | <img width="200" alt="Image" src="https://github.com/user-attachments/assets/5fea693b-4666-48c9-b1a7-49d9d8c650bd" /> |
 
-*(Note: Replace the placeholder links above with actual URLs or relative paths to your screenshots, e.g., `assets/images/home.png`)*
 
 ## 🛠️ Tech Stack
 
 * **Framework:** [Flutter](https://flutter.dev/)
 * **Language:** [Dart](https://dart.dev/)
-* **State Management:** *[Add yours here, e.g., Provider, Riverpod, BLoC, or GetX]*
-* **Database:** *[Add yours here, e.g., Hive, SQLite, or SharedPreferences]*
 
 ## 🚀 Getting Started
 
