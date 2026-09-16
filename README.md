@@ -12,9 +12,9 @@ A clean, modern, and user-friendly expense tracking application built with Flutt
 
 ## 📸 Screenshots
 
-| Home Screen | Add Expense | Statistics |
-|-------------|-------------|------------|
-| <img width="200" alt="Image" src="https://github.com/user-attachments/assets/9145d653-6d3c-4f90-a1b2-b1d961a08487" /> | <img src="https://via.placeholder.com/200x400.png?text=Add+Expense" width="200"/> | <img src="https://via.placeholder.com/200x400.png?text=Statistics" width="200"/> |
+| Home Screen | Add Expense |
+|-------------|-------------|
+| <img width="200" alt="Image" src="https://github.com/user-attachments/assets/9145d653-6d3c-4f90-a1b2-b1d961a08487" /> | <img width="200" alt="Image" src="https://github.com/user-attachments/assets/5fea693b-4666-48c9-b1a7-49d9d8c650bd" /> |
 
 *(Note: Replace the placeholder links above with actual URLs or relative paths to your screenshots, e.g., `assets/images/home.png`)*
 
